@@ -18,24 +18,24 @@
 ## 🏗️ System Architecture
 The pipeline follows a decoupled, event-driven Medallion Architecture (Raw ➔ Staging ➔ Gold):
 
-[Digitraffic API] 
-      │ (JSON/XML)
-      ▼
-[Python Producers] ➔ [Apache Kafka] ➔ [Python Consumers]
-                                              │
-                                              ▼
-                                     [PostgreSQL (Raw Layer)]
-                                              │
-                                              ▼
-                                        [dbt Core]
-                                              │
-                           ──────────────────┴──────────────────┐
-                           ▼                                     ▼
-                  [Staging Layer]                        [Gold Layer]
-                           │                                     │
-                           └──────────────┬──────────────────────┘
-                                          ▼
-                                    [Power BI]
+
+graph TD
+    A[🌐 Digitraffic API\nJSON / XML] -->|1. Python Producers| B((📨 Apache Kafka))
+    B -->|2. Python Consumers| C[(🗄️ PostgreSQL\nRaw Layer)]
+    C -->|3. dbt Core Transformations| D[(⚙️ PostgreSQL\nStaging Layer)]
+    D -->|4. dbt Core Modeling| E[(🏆 PostgreSQL\nGold Layer)]
+    E -->|5. Direct Query / Import| F[📊 Power BI\nDashboard]
+
+    %% Styling for professional look
+    classDef api fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef kafka fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef db fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+    classDef bi fill:#fff8e1,stroke:#f57f17,stroke-width:2px;
+
+    class A api;
+    class B kafka;
+    class C,D,E db;
+    class F bi;
 
 ---
 
@@ -84,21 +84,27 @@ All project documentation is strictly organized according to the **7 DEPI Projec
 
 ## 📁 Repository Structure
 
-real-time-traffic-analytics/
-├── docs/                 # 📄 All DEPI Documentation (Phases 1-7)
-├── src/                  # 🐍 Python Source Code (Producers, Consumers, Utils)
-├── dbt_project/          # 🔄 dbt Core Models, Tests, and Configurations
-├── docker/               # 🐳 Dockerfiles and docker-compose.yml
-├── powerbi/              # 📊 Power BI .pbix files and dataset configs
-├── .gitignore            # 🚫 Ignored files (env, pycache, etc.)
-└── README.md             # 📖 You are here!
+- 📄 **`docs/`** : All DEPI Documentation (Phases 1-7)
+  - `01_Project_Planning/`
+  - `02_Lecturer_Review/`
+  - `03_Requirements/`
+  - `04_Analysis_Design/` *(Includes Literature Review)*
+  - `05_Implementation/`
+  - `06_Testing_QA/`
+  - `07_Final_Phase/`
+- 🐍 **`src/`** : Python Source Code (Producers, Consumers, Utils)
+- 🔄 **`dbt_project/`** : dbt Core Models, Tests, and Configurations
+- 🐳 **`docker/`** : Dockerfiles and `docker-compose.yml`
+- 📊 **`powerbi/`** : Power BI `.pbix` files and dataset configs
+- 🚫 **`.gitignore`** : Ignored files (`.env`, `__pycache__`, etc.)
+- 📖 **`README.md`** : You are here!
 
 ---
 
 ## 🚀 How to Run Locally
 
 1. Clone the repository:
-   git clone https://github.com/YOUR_USERNAME/real-time-traffic-analytics.git
+   git clone https://github.com/nhahub/NHA-5-051.git
    cd real-time-traffic-analytics
 
 2. Configure Environment Variables:
