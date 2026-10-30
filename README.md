@@ -18,15 +18,14 @@
 ## 🏗️ System Architecture
 The pipeline follows a decoupled, event-driven Medallion Architecture (Raw ➔ Staging ➔ Gold):
 
-
+```mermaid
 graph TD
-    A[🌐 Digitraffic API\nJSON / XML] -->|1. Python Producers| B((📨 Apache Kafka))
+    A[🌐 Digitraffic API] -->|1. Python Producers| B((📨 Apache Kafka))
     B -->|2. Python Consumers| C[(🗄️ PostgreSQL\nRaw Layer)]
     C -->|3. dbt Core Transformations| D[(⚙️ PostgreSQL\nStaging Layer)]
     D -->|4. dbt Core Modeling| E[(🏆 PostgreSQL\nGold Layer)]
     E -->|5. Direct Query / Import| F[📊 Power BI\nDashboard]
 
-    %% Styling for professional look
     classDef api fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
     classDef kafka fill:#fff3e0,stroke:#e65100,stroke-width:2px;
     classDef db fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
@@ -36,6 +35,7 @@ graph TD
     class B kafka;
     class C,D,E db;
     class F bi;
+```
 
 ---
 
